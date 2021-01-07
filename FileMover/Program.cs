@@ -8,6 +8,7 @@ namespace FileMover
     {
         static string PATH_files = "";
         static string PATH_Absolute = "";
+        static string seperator = "";
 
         static Dictionary<string, List<FileInfo>> Files = new Dictionary<string, List<FileInfo>>();
 
@@ -17,6 +18,9 @@ namespace FileMover
             PATH_files = Console.ReadLine();
 
             Console.WriteLine("입력한 파일 경로: " + PATH_files + "\n");
+
+            Console.WriteLine("파일 이름을 자르는 기준을 알려주세요. ex) . _ / ");
+            seperator = Console.ReadLine();
 
             Console.WriteLine("폴더들이 있는 경로를 풀로 적어주세요. (복사 붙여넣기 하시면 됩니다.)");
             PATH_Absolute = Console.ReadLine();
@@ -36,9 +40,12 @@ namespace FileMover
             DirectoryInfo dir = new DirectoryInfo(PATH_files);
             string fi = string.Empty;
 
+            Console.WriteLine(seperator + " 로 글자를 나누었을때, 몇번째 글자가 폴더 이름인가요? ex) 0,1,2...");
+            int _fileIndex = int.Parse(Console.ReadLine());
+
             foreach (System.IO.FileInfo file in dir.GetFiles())
             {
-                string fileKey = file.Name.Split('_')[0];
+                string fileKey = file.Name.Split(char.Parse(seperator))[_fileIndex];
                 if (Files.ContainsKey(fileKey))
                 {
                     //키 보유 = 추가
